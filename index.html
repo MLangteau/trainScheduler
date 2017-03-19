@@ -6,98 +6,69 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
   
-    <link rel="stylesheet" type="text/css" href="assets/css/reset.css"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- not need with framwork  <link rel="stylesheet" type="text/css" href="assets/css/reset.css"/>   -->
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+	<!-- Bootstrap CDNs-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+
     <link rel="stylesheet" type="text/css" href="assets/css/style.css"/>  
+
+	<!-- Firebase Reference -->
+	<script src="https://www.gstatic.com/firebasejs/3.7.2/firebase.js"></script>
+
 </head>
 
 <body>
 
 <div class="container">
-
 	<br>
-
 	<!-- Jumbotron -->
-	<div class="jumbotron">
-		<h1 class="text-center">Anytime is Train Time</h1>
-		<h3 class="text-center">Choo Choo.  Chee Chee.</h3>
+	<div class="jumbotron jumbotron-primary">
+		<h1 class="text-center">Train Scheduler</h1>
+		<h3 class="text-center">Find and Add new train departures below</h3>
 	</div>
 
-	<div class="row">
-
-		<!-- Sign-Up Panel-->
-	  <div class="col-lg-12">
-
-	   <br>
+<!--	<div class="row">             -->
+		<!-- Panel-->
+	  <div class="col-md-6 see-thru">
 	   <div id="sch-box">
-		<div class="panel panel-default">
+		<div class="panel panel-primary">
 		  <!-- Default panel contents -->
 		  <div class="panel-heading">
 			  <div class="panel-title">Current Train Schedule</div>
 		  </div>
 		  <div class="panel-body">
 		  <!-- Table -->
-			<table class="table">
+			<table class="table" id="train-table">
 			  <thead class="thead">
 			    <tr>
-			      <th>Train Name</th>
-			      <th>Destination</th>
-			      <th>Frequency (min)</th>
-			      <th>Next Arrival</th>
-			      <th>Minutes Away</th>
+			      <th scope="column">Train Name</th>
+			      <th scope="column">Destination</th>
+			      <th scope="column">Frequency (min)</th>
+			      <th scope="column">Next Arrival</th>
+			      <th scope="column">Minutes Away</th>
 			    </tr>
 			  </thead>
 			  <tbody>
-			    <tr>
-			      <th scope="row">1</th>
-			      <td>Washington, D.C.</td>
-			      <td>45</td>
-			      <td>3:00 PM</td>
-			      <td>10</td>
-			    </tr>
-			    <tr>
-			      <th scope="row">2</th>
-			      <td>Pikesville, NY</td>
-			      <td>55</td>
-			      <td>2:45 AM</td>
-			      <td>108</td>
-			    </tr>
-			    <tr>
-			      <th scope="row">3</th>
-			      <td>Los Angeles, CA</td>
-			      <td>10</td>
-			      <td>2:45 AM</td>
-			      <td>11</td>
-			    </tr>
-			    <tr>
-			      <th scope="row">4</th>
-			      <td>Gainesville, FL</td>
-			      <td>25</td>
-			      <td>2:45 AM</td>
-			      <td>54</td>
-			    </tr>
-			    <tr>
-			      <th scope="row">5</th>
-			      <td>Antibes, France</td>
-			      <td>35</td>
-			      <td>4:00 AM</td>
-			      <td>1740</td>
-			    </tr>
+
 			  </tbody>
 			</table>
-		  </div>
-		</div>
+		  </div>   <!-- end of "panel body"> -->
+		</div>  <!-- end of "panel panel-primary"> -->
 	  </div>  <!-- end of schedule box sch-box --> 
-	  </div> <!-- end of col-lg-10 -->
-	 </div>  <!-- end of row -->
+	  </div> <!-- end of col-md-6 -->
 
-	   <div id="add-train-box">
+<!--	</div>  -->  <!-- end of row -->
 
-		<div class="panel panel-default">
+	<div id="add-train-box" class="col-md-6 see-thru">
+
+		<div class="panel panel-primary">
 		  <!-- Default panel contents -->
-		  <div class="panel-heading">Add Train</div>
-		  <div class="panel-body">
+		  	<div class="panel-heading"><strong>Add Train</strong></div>
+		  		<div class="panel-body">
 
 					<form role="form">
 						<div class="form-group">
@@ -109,40 +80,31 @@
 							<input class="form-control" id="destination-input" type="text">
 						</div>
 						<div class="form-group">
-							<label for="sched-time-input">First Train Time (HH:mm - military time)</label>
-							<input class="form-control" id="sched-time-input" type="number">
+							<label for="first-train-time-input">First Train Time (HH:mm - military time)</label>
+							<input class="form-control" id="first-train-time-input" type="text">
 						</div>
 						<div class="form-group">
 							<label for="frequency-input">Frequency (min)</label>
-							<input class="form-control" id="frequency-input" type="number">
+							<input class="form-control" id="frequency-input" type="text">
 						</div>
-						<button class="btn btn-default"
-										id="add-user"
+						<button class="btn btn-primary"
+										id="add-train"
 										type="submit">Submit
 						</button>
-<!--
-        <form id="train-form">
-	
-	          <div class="input-group input-group-sm">
-	            <input type="text" class="train-name" value="">
-	            <input type="text" class="train-destination" value="">
-	            <input type="text" class="train-time" value="">
-	            <input type="text" class="train-freq" value="">
-	           <button class="btn btn-default" id="add-train" type="submit" value="Submit"></button>
-	          </div>
-	        </form>
--->
-		  </div>
-		</div>
+					</form>
+		  		</div>  <!-- Panel-body -->
+		</div>  <!-- panel panel-primary  -->
 	  </div>  <!-- end of add-train-box -->  
 	</div>  <!-- end of container -->
 
-	    <!-- jQuery -->
-	    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.js"></script>
-	    <!-- ajax -->
-	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	    <!-- Script -->
-	    <script type="text/javascript" src="assets/javascript/app.js"></script>
-	  
+	<!-- jQuery -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.js"></script>
+	<!-- ajax -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<!-- Moment.js -->	  
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+	<!-- Script -->
+	<script type="text/javascript" src="assets/javascript/app.js"></script>
+
 </body>
 </html>
