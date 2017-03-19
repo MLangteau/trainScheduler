@@ -22,83 +22,8 @@ $("#add-train").on("click", function(event) {
 	var firstTrainTime = $("#first-train-time-input").val().trim();
 	var frequency = $("#frequency-input").val().trim();
 
-/*
-  if(isNaN(firstTrainTime)){
-	console.log(firstTrainTime + " is not a number <br/>");
- }else{
-	console.log(firstTrainTime + " is a number <br/>");
- };
-
-//	var firstTrainTime = moment($("#first-train-time-input").val().trim(), "HH:mm").subtract(10, "y").format("X");
-	console.log("firstTrainTime " + firstTrainTime);
-
-    // First Time (pushed back 1 year to make sure it comes before current time)
-//    var firstTimeConverted = moment(firstTrainTime, "hh:mm").subtract(1, "years");
-
-	var firstTimeConverted = moment(firstTrainTime, "m").subtract(1, "years");
-
-    console.log("firstTimeConverted " + firstTimeConverted);
-
-
-if(isNaN(firstTrainTime)){
-	console.log(firstTimeConverted + " is not a number <br/>");
- }else{
-	console.log(firstTimeConverted + " is a number <br/>");
- };
-
-*/
-
-
-
-//	console.log("before: ", firstTrainTime, "****************before"); 
-
-
-//	console.log("after: ", firstTrainTime, "*****************after"); 
-
-
-//	var firstTrainTime = moment($("#first-train-time-input").val().trim(), "HH:mm").format()
-//	console.log("third time: ", firstTrainTime, "*****************third "); 
-
-	
-
-// ***************************************************
-/*
-var time = firstTrainTime; // your input "16:30:00"
-
-time = time.split(':'); // convert to array
-
-// fetch
-var hour = Number(time[0]);
-var minutes = Number(time[1]);
-var seconds = Number(time[2]);
-
-// calculate
-var timeValue;
-
-if (hour > 0 && hour <= 12) {
-  timeValue= "" + hour;
-} else if (hour > 12) {
-  timeValue= "" + (hour - 12);
-} else if (hour == 0) {
-  timeValue= "12";
-};
- 
-timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
-timeValue += (seconds < 10) ? ":0" + seconds : ":" + seconds;  // get seconds
-timeValue += (hours >= 12) ? " P.M." : " A.M.";  // get AM/PM
-
-// show
-alert(timeValue);
-console.log(timeValue);
-
-// ***************************************************
-
-//	var trainTimeFormat = moment(firstTrainTime).format('HH:mm');
-	var trainTimeFormat = timeValue;
-	console.log("trainTimeFormat 2: ", trainTimeFormat);        */
-
-
-//	var trainTimeFormat = moment(firstTrainTime).format('HH:mm');
+//	var trainTimeFormat = moment(firstTrainTime).subtract(1, "years").format('HH:mm');
+//	console.log("trainTimeFormat" + trainTimeFormat);
 
 	console.log(trainName);
 	console.log(destination);
@@ -122,8 +47,7 @@ console.log(timeValue);
 	console.log(newTrain.dest);
 	console.log(newTrain.firstTT);
 	console.log(newTrain.freq);
-
-//  Alert 
+ 
 //	alert("Train successfully added");
 
 //  clears text boxes
@@ -159,8 +83,6 @@ database.ref().on("child_added", function (childSnapshot, prevChildKey) {
 //	var trainTimeFormat = moment(firstTrainTime).format('HH:mm');
 //	console.log("trainTimeFormat 1: ", trainTimeFormat);
 
-
-//	var firstTimeTransfered = moment(firstTrainTime, "hh:mm").subtract(1, "years");
 	var firstTimeTransfered = moment(firstTrainTime, "hh:mm").subtract(1, "years");
 		console.log("firstTimeTransfered: " + firstTimeTransfered);
 
@@ -171,18 +93,13 @@ database.ref().on("child_added", function (childSnapshot, prevChildKey) {
 //	if (isNaN(checkNum)){
 		//	okay 
 */
-
 	var presentTime = moment().format("HH:mm A");
 		console.log("Current time: " + presentTime);
 
 //  Calculate Next Arrival (current time - firstTrainTime; find remainder/freq)
-//	var diffInTime = moment().diff(moment.unix(firstTrainTime), "minutes");
 
 //  Notes from momentjs.com docs
 //  moment().diff(moment|String|Number|Date|Array);
-
-//	var diffInTime = moment().diff(moment.unix(firstTrainTime), "minutes");
-
 //	var diffInTime = moment().diff(moment.unix(firstTrainTime), "minutes");
 
 	var diffInTime = moment().diff(moment(firstTimeTransfered), "minutes");
@@ -194,24 +111,15 @@ database.ref().on("child_added", function (childSnapshot, prevChildKey) {
 	var minAway = frequency - timeRemainder;
 		console.log("Minutes until train arrival: " + minAway);
 
-//	console.log("First Train time: " + firstTrainTime);
-
 //  Notes from Momentjs.com docs
 //  This adds time to an existing moment. To add time, pass the key of what time 
 //     you want to add, and the amount you want to add. "moment().add(7, 'minutes');"
-//  calculating the arrival time add minutes to the current time (in minutes)
+//	Calculating the arrival time adding minutes to the current time
 
 	var timeUntilArrival = moment().add(minAway, "minutes");
 		console.log("Next train arrival time: " + moment(timeUntilArrival).format("hh:mm A"));
-//	var timeUntilArrival = moment().add(minAway, "m").format("hh:mm A");
 
-//	console.log(moment().format("hh:mm A"));
-//	console.log(moment().format("HH:mm"));
-//	console.log(timeUntilArrival);
-//	console.log(moment.unix(firstTrainTime).format("X"));
-//	console.log(moment().format("X"));
-
-	var nextTime = moment(timeUntilArrival).format("hh:mm");
+	var nextTime = moment(timeUntilArrival).format("hh:mm A");
 
 // Add each train's data into the table
   $("#train-table > tbody").append("<tr><td>" + trainName + "</td><td>" + destination + "</td><td>" +
