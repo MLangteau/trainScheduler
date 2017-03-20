@@ -130,4 +130,5 @@ database.ref().on("child_added", function (childSnapshot, prevChildKey) {
 		alert('Please re-enter info: First Train Time is invalid, (HH:mm in military time) ');
 	};
 */
+
 });
