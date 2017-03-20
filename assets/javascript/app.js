@@ -1,4 +1,4 @@
-// Initialize Firebase // resolved
+// Initialize Firebase // rewired
   var config = {
     apiKey: "AIzaSyAF40T2PsrBRYJanOXMMW0nTDlDE4-AP8A",
     authDomain: "trainscheduler-bdbd9.firebaseapp.com",
