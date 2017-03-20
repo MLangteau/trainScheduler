@@ -1,4 +1,4 @@
-// Initialize Firebase //
+// Initialize Firebase // resolved
   var config = {
     apiKey: "AIzaSyAF40T2PsrBRYJanOXMMW0nTDlDE4-AP8A",
     authDomain: "trainscheduler-bdbd9.firebaseapp.com",
@@ -139,4 +139,5 @@ database.ref().on("child_added", function (childSnapshot, prevChildKey) {
 		alert('Please re-enter info: First Train Time is invalid, (HH:mm in military time) ');
 	};
 */
+
 });
