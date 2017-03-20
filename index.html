@@ -1,99 +1,105 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
 	<title>Train Scheduler</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
   
-	<!-- not needed with framwork  <link rel="stylesheet" type="text/css" href="assets/css/reset.css"/>   -->
-
 	<!-- jQuery -->
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
 	<!-- Bootstrap CDNs-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 
+	<!-- My Style Sheet -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css"/>  
 
 	<!-- Firebase Reference -->
 	<script src="https://www.gstatic.com/firebasejs/3.7.2/firebase.js"></script>
 
-</head>
+  </head>
 
-<body>
+  <body>
 
-<div class="container">
-	<br>
-	<!-- Jumbotron -->
-	<div class="jumbotron jumbotron-primary">
-		<h1 class="text-center">Train Scheduler</h1>
-		<h3 class="text-center">Find and Add new train departures below</h3>
-	</div>
+	<div class="container wrapper">
+		<br>
+		<!-- Jumbotron -->
+		<div class="jumbotron jumbotron-primary">
+			<br>
+			<h1 class="text-center">Train Scheduler</h1>
 
-		<!-- Panel-->
-	  <div class="col-md-6 see-thru">
-	   <div id="sch-box">
-		<div class="panel panel-primary">
-		  <!-- Default panel contents -->
-		  <div class="panel-heading">
-			  <div class="panel-title">Current Train Schedule</div>
-		  </div>
-		  <div class="panel-body">
-		  <!-- Table -->
-			<table class="table" id="train-table">
-			  <thead class="thead">
-			    <tr>
-			      <th scope="column">Train Name</th>
-			      <th scope="column">Destination</th>
-			      <th scope="column">Frequency (min)</th>
-			      <th scope="column">Next Arrival</th>
-			      <th scope="column">Minutes Away</th>
-			    </tr>
-			  </thead>
-			  <tbody>
+			<h3><marquee behavior="alternate" scrollamount="3">Add New Train Departures Below</marquee></h3>
+			<marquee direction="left" scrollamount="5"><img src="assets/images/doubletrain.jpg" alt="Train"></marquee>
+		</div>  <!-- end of jumbotron -->
 
-			  </tbody>
-			</table>
-		  </div>   <!-- end of "panel body"> -->
-		</div>  <!-- end of "panel panel-primary"> -->
-	  </div>  <!-- end of schedule box sch-box --> 
-	  </div> <!-- end of col-md-6 -->
-
-	<div id="add-train-box" class="col-md-6 see-thru">
-
-		<div class="panel panel-primary">
-		  <!-- Default panel contents -->
-		  	<div class="panel-heading"><strong>Add Train</strong></div>
-		  		<div class="panel-body">
-
-					<form role="form">
-						<div class="form-group">
-							<label for="train-name-input">Train Name</label>
-							<input class="form-control" id="train-name-input" type="text">
+		<div class="main-body">
+			<!-- Panel-->
+	  		<div class="col-md-6 see-thru" id="sch-box">
+	   			<div>
+					<div class="panel panel-primary">
+		  			<!-- Default panel contents -->
+		  				<div class="panel-heading">
+			  				<div class="panel-title"><strong>Current Train Schedule</strong></div>
 						</div>
-						<div class="form-group">
-							<label for="destination-input">Destination</label>
-							<input class="form-control" id="destination-input" type="text">
-						</div>
-						<div class="form-group">
-							<label for="first-train-time-input">First Train Time (HH:mm - military time)</label>
-							<input class="form-control" id="first-train-time-input" type="text">
-						</div>
-						<div class="form-group">
-							<label for="frequency-input">Frequency (min)</label>
-							<input class="form-control" id="frequency-input" type="text">
-						</div>
-						<button class="btn btn-primary"
-										id="add-train"
-										type="submit">Submit
-						</button>
-					</form>
-		  		</div>  <!-- Panel-body -->
-		</div>  <!-- panel panel-primary  -->
-	  </div>  <!-- end of add-train-box -->  
-	</div>  <!-- end of container -->
+		  				<div class="panel-body">
+		  					<!-- Table -->
+							<table class="table" id="train-table">
+			  					<thead class="thead">
+			    					<tr>
+						    			<th scope="column">Train Name</th>
+									    <th scope="column">Destination</th>
+									    <th scope="column">Frequency (min)</th>
+									    <th scope="column">Next Arrival</th>
+									    <th scope="column">Minutes Away</th>
+			    					</tr>
+			  					</thead>
+								<tbody>
+									<!-- Table will be filled in by code -->
+			  					</tbody>
+							</table>
+		  				</div>   <!-- end of "panel body"> -->
+					</div>  <!-- end of "panel panel-primary"> -->
+	  			</div>  <!-- end of schedule box sch-box --> 
+	  		</div> <!-- end of col-md-6 -->
+
+			<div id="add-train-box" class="col-md-6 see-thru">
+
+				<div class="panel panel-primary">
+		  		<!-- Default panel contents -->
+
+			 		<div class="panel-heading">
+						<div class="panel-title"><strong>Add Train</strong></div>
+					</div>
+			  		<div class="panel-body">
+						<form role="form">
+							<div class="form-group">
+								<label for="train-name-input">Train Name</label>
+								<input class="form-control" id="train-name-input" type="text">
+							</div>
+							<div class="form-group">
+								<label for="destination-input">Destination</label>
+								<input class="form-control" id="destination-input" type="text">
+							</div>
+							<div class="form-group">
+								<label for="first-train-time-input">First Train Time (HH:mm - military time)</label>
+								<input class="form-control" id="first-train-time-input" type="text">
+							</div>
+							<div class="form-group">
+								<label for="frequency-input">Frequency (min)</label>
+								<input class="form-control" id="frequency-input" type="number">
+							</div>
+							<button class="btn btn-primary"
+											id="add-train"
+											type="submit">Submit
+							</button>
+						</form>
+			  		</div>  <!-- Panel-body -->
+				</div>  <!-- panel panel-primary  -->
+	  		</div>  <!-- end of add-train-box --> 
+
+		</div> <!-- end of main body --> 
+	</div>  <!-- end of container/wrapper -->
 
 	<!-- jQuery -->
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.js"></script>
@@ -102,7 +108,7 @@
 	<!-- Moment.js -->	  
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 	<!-- Script -->
-	<script type="text/javascript" src="assets/javascript/app.js"></script>
+	<script type="text/javascript" src="assets/javascript/app.js"></script> 
 
-</body>
+  </body>
 </html>
