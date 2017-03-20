@@ -1,4 +1,4 @@
-  // Initialize Firebase
+// Initialize Firebase
   var config = {
     apiKey: "AIzaSyAF40T2PsrBRYJanOXMMW0nTDlDE4-AP8A",
     authDomain: "trainscheduler-bdbd9.firebaseapp.com",
@@ -79,12 +79,21 @@ database.ref().on("child_added", function (childSnapshot, prevChildKey) {
 	console.log(firstTrainTime);
 	console.log(frequency);
 
+	if (isNaN(firstTrainTime)) {
+		console.log("is not a number: " + firstTrainTime);
+	}
+	else {
+		console.log("Need to enter as military time with ':' " + firstTrainTime);
+	};
+
 //	var diffTime = moment().diff(moment.unix(trainFirst), "minutes");	
 //	var trainTimeFormat = moment(firstTrainTime).format('HH:mm');
 //	console.log("trainTimeFormat 1: ", trainTimeFormat);
 
+
 	var firstTimeTransfered = moment(firstTrainTime, "hh:mm").subtract(1, "years");
 		console.log("firstTimeTransfered: " + firstTimeTransfered);
+
 
 /*	var timeCheck = firstTimeTransfered;
 	var checkNum = 	parseInt(timeCheck);
