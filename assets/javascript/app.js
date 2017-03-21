@@ -87,7 +87,7 @@ database.ref().on("child_added", function (childSnapshot, prevChildKey) {
 	var frequency = childSnapshot.val().freq;
 
 	
-	console.log("The following are the four items: ");
+	console.log("The following are the database items: ");
 	console.log(trainName);
 	console.log(destination);
 	console.log(firstTrainTime);
@@ -120,11 +120,19 @@ database.ref().on("child_added", function (childSnapshot, prevChildKey) {
 	var diffInTime = moment().diff(moment.unix(firstTrainTime), "minutes");
 		console.log("diffInTime: " + diffInTime);
 
-	var timeRemainder = (diffInTime % frequency);
+	var timeRemainder = diffInTime % frequency;
 		console.log("timeRemainder: " + timeRemainder);
 
-	var minAway = frequency - timeRemainder;
+	if (frequency > 60) {
+		var fred = (frequency % 60);
+		var wilma = (frequency/60);
+		var minAway = (fred - timeRemainder) + (wilma*60); 
 		console.log("Minutes until train arrival: " + minAway);
+	}
+	else{
+		var minAway = frequency - timeRemainder;
+		console.log("Minutes until train arrival: " + minAway);
+	};
 
 //  Notes from Momentjs.com docs
 //  This adds time to an existing moment. To add time, pass the key of what time 
