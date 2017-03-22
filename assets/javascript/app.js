@@ -1,4 +1,4 @@
-// Initialize Firebase // rewired
+// Initialize Firebase // bonus
   var config = {
     apiKey: "AIzaSyAF40T2PsrBRYJanOXMMW0nTDlDE4-AP8A",
     authDomain: "trainscheduler-bdbd9.firebaseapp.com",
@@ -27,8 +27,21 @@ $("#add-train").on("click", function(event) {
 	var firstTrainTimePlain = $("#first-train-time-input").val().trim();
 		console.log("firstTrainTimePlain: " + firstTrainTimePlain);
 
-//	var firstTrainTimePlainX = moment($("#first-train-time-input").val().trim(), "HH:mm").format("X");
-//		console.log("firstTrainTimePlainX:   " + firstTrainTimePlainX);
+/* NEW */
+	var timeStr = firstTrainTimePlain.split(':');
+		console.log("firstTrainTimePlain: " + firstTrainTimePlain);
+		console.log("timeStr: " + timeStr);
+
+	var h = parseInt(timeStr [0]);			
+		m = parseInt(timeStr [1]);
+
+	if (isNaN(h) || isNaN(m)) {
+	// don't refresh (hours and minutes not populated correctly)
+		console.log("hours and minutes not populated correctly");
+		return false;
+	}
+	else
+	{
 
 	var presentTime = moment().format("HH:mm A");
 		console.log("Current time: " + presentTime);
@@ -39,37 +52,62 @@ $("#add-train").on("click", function(event) {
 
 	var frequency = $("#frequency-input").val().trim();
 
-	console.log(trainName);
-	console.log(destination);
-	console.log(frequency);
+	if (trainName != "" && destination != "" && 
+		firstTrainTime != "" && frequency != "") {
 
-  // Creates local "temporary" object for holding train data
+		console.log(trainName);
+		console.log(destination);
+		console.log(frequency);
 
-	var newTrain = {
-		trainNm: trainName,
-	    dest: destination,
-		firstTT: firstTrainTime,
-		firstTTReadable: firstTrainTimePlain,
-		freq: frequency
-	};
+	  // Creates local "temporary" object for holding train data
 
-// Uploads train data to the database
-	database.ref().push(newTrain);
+		var newTrain = {
+			trainNm: trainName,
+		    dest: destination,
+			firstTT: firstTrainTime,
+			firstTTReadable: firstTrainTimePlain,
+			freq: frequency
+		};
 
-// Logs everything to the console
-	console.log("newTrain: ", newTrain);
+		// Uploads train data to the database
+		database.ref().push(newTrain);
 
-//	alert("Train successfully added");
+		// Logs everything to the console
+		console.log("newTrain: ", newTrain);
 
-//  clears text boxes
-	$("#train-name-input").val("");
-	$("#destination-input").val("");
-	$("#first-train-time-input").val("");
-	$("#frequency-input").val("");
+		//	alert("Train successfully added");
 
-// Prevent refreshing / moving to a new page
+		//  clears text boxes for adding more values
+		$("#train-name-input").val("");
+		$("#destination-input").val("");
+		$("#first-train-time-input").val("");
+		$("#frequency-input").val("");
+	}
+	else {
+		// don't refresh (did not add train--empty)
+		return false;
+	}
+	// don't refresh
 	return false;
+
+	} // hours and minutes are good
  }); // end of add-train click
+
+// refreshes the pages after no activity (no keys pressed 
+// 	and mouse does not move)
+var time = new Date().getTime();
+$(document.body).bind("keypress mousemove", function(e) {
+    time = new Date().getTime();
+});
+
+function refresh() {
+    if(new Date().getTime() - time >= 60000) 
+        window.location.reload(true);
+    else 
+        setTimeout(refresh, 10000);
+}
+
+setTimeout(refresh, 10000);
 
 // When user adds entry to database (in other event), this creates Fbase event for 
 //  adding row in html 
@@ -93,22 +131,7 @@ database.ref().on("child_added", function (childSnapshot, prevChildKey) {
 	console.log(firstTrainTime);
 	console.log("Just storing this for ease of use: " + firstTrainTime2);
 	console.log(frequency);
-/*
-	if (isNaN(firstTrainTimeX)) {
-		console.log("is not a number: " + firstTrainTimeX);
-	}
-	else {
-		console.log("Need to enter as military time with ':' " + firstTrainTimeX);
-	};
-*/
 
-/*	var timeCheck = firstTimeTransfered;
-	var checkNum = 	parseInt(timeCheck);
-	alert("checkNum: " + checkNum);
-
-//	if (isNaN(checkNum)){
-		//	okay  below not utc
-*/
 	var presentTime = moment().format("HH:mm A");
 		console.log("Current time: " + presentTime);
 
@@ -123,6 +146,7 @@ database.ref().on("child_added", function (childSnapshot, prevChildKey) {
 	var timeRemainder = diffInTime % frequency;
 		console.log("timeRemainder: " + timeRemainder);
 
+	// checking if over an hour
 	if (frequency > 60) {
 		var fred = (frequency % 60);
 		var wilma = (frequency/60);
@@ -145,11 +169,5 @@ database.ref().on("child_added", function (childSnapshot, prevChildKey) {
 // Add each train's data into the table
   $("#train-table > tbody").append("<tr><td>" + trainName + "</td><td>" + destination + "</td><td>" +
   frequency + "</td><td>" + timeUntilArrival + "</td><td>" + minAway + "</td></tr>");
-/*
-} //  end of if train is nan
-	else {
-		alert('Please re-enter info: First Train Time is invalid, (HH:mm in military time) ');
-	};
-*/
 
-});
+});  //  addition of new train
