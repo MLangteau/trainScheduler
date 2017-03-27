@@ -21,8 +21,10 @@ $("#add-train").on("click", function(event) {
 	var destination = $("#destination-input").val().trim();
 
 //	var firstTrainTime = $("#first-train-time-input").val().trim();
-	var firstTrainTime = moment($("#first-train-time-input").val().trim(), "HH:mm").subtract(1, "years").format("X");
-		console.log("firstTrainTime:      " + firstTrainTime);
+	var firstTrainTime = moment($("#first-train-time-input").val().trim(), "hh:mm").subtract(1, "years").format("X");
+	console.log("firstTrainTime:      " + firstTrainTime);
+//	var firstTrainTime = moment($("#first-train-time-input").val().trim(), "HH:mm").subtract(1, "years");
+//		console.log("firstTrainTime:      " + firstTrainTime);
 
 	var firstTrainTimePlain = $("#first-train-time-input").val().trim();
 		console.log("firstTrainTimePlain: " + firstTrainTimePlain);
@@ -55,23 +57,24 @@ $("#add-train").on("click", function(event) {
 	if (trainName != "" && destination != "" && 
 		firstTrainTime != "" && frequency != "") {
 
-		console.log(trainName);
-		console.log(destination);
-		console.log(frequency);
+		console.log("trainName: " + trainName);
+		console.log("destination: " + destination);
+		console.log("frequency: " + frequency);
+		console.log("before pushing ");
 
 	  // Creates local "temporary" object for holding train data
 
 		var newTrain = {
-			trainNm: trainName,
-		    dest: destination,
+			dest: destination,
 			firstTT: firstTrainTime,
 			firstTTReadable: firstTrainTimePlain,
-			freq: frequency
+			freq: frequency,
+			trainNm: trainName
 		};
 
 		// Uploads train data to the database
-		database.ref().push(newTrain);
-
+		database.ref().push(newTrain);	
+		console.log("after pushing ");
 		// Logs everything to the console
 		console.log("newTrain: ", newTrain);
 
@@ -133,12 +136,14 @@ database.ref().on("child_added", function (childSnapshot, prevChildKey) {
 	console.log(frequency);
 
 	var presentTime = moment().format("HH:mm A");
-		console.log("Current time: " + presentTime);
+		console.log("Present time: " + presentTime);
 
 //  Calculate Next Arrival (current time - firstTrainTime; find remainder/freq)
 
 //  Notes from momentjs.com docs
 //  moment().diff(moment|String|Number|Date|Array);
+
+	var currentTime = moment();
 
 	var diffInTime = moment().diff(moment.unix(firstTrainTime), "minutes");
 		console.log("diffInTime: " + diffInTime);
@@ -147,27 +152,21 @@ database.ref().on("child_added", function (childSnapshot, prevChildKey) {
 		console.log("timeRemainder: " + timeRemainder);
 
 	// checking if over an hour
-	if (frequency > 60) {
-		var fred = (frequency % 60);
-		var wilma = (frequency/60);
-		var minAway = (fred - timeRemainder) + (wilma*60); 
-		console.log("Minutes until train arrival: " + minAway);
-	}
-	else{
-		var minAway = frequency - timeRemainder;
-		console.log("Minutes until train arrival: " + minAway);
-	};
+	var minAway = frequency - timeRemainder;
+	console.log("Minutes until train arrival: " + minAway);
 
 //  Notes from Momentjs.com docs
 //  This adds time to an existing moment. To add time, pass the key of what time 
 //     you want to add, and the amount you want to add. "moment().add(7, 'minutes');"
-//	Calculating the arrival time adding minutes to the current time
+//	...Calculating the arrival time adding minutes to the current time
 
-	var timeUntilArrival = moment().add(minAway, "minutes").format("hh:mm A");
-	console.log("Next train arrival time: " + timeUntilArrival);
+	var nextTrain = moment().add(minAway, "minutes").format("hh:mm A");
+	console.log("minAway with format: " + minAway);
+
+	console.log("Next train arrival time: " + nextTrain);
 
 // Add each train's data into the table
   $("#train-table > tbody").append("<tr><td>" + trainName + "</td><td>" + destination + "</td><td>" +
-  frequency + "</td><td>" + timeUntilArrival + "</td><td>" + minAway + "</td></tr>");
+  frequency + "</td><td>" + nextTrain + "</td><td>" + minAway + "</td></tr>");
 
 });  //  addition of new train
